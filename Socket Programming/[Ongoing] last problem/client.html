@@ -1,0 +1,69 @@
+<!-- no need to change the prewritten code.
+complete the script tag code. -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Task Management App</title>
+</head>
+
+<body>
+    <div id="task-form">
+        <!-- Create a form to add new tasks -->
+        <form id="create-task-form">
+            <input type="text" id="task-text" placeholder="Enter a new task" required>
+            <button id="create-task" type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <div id="task-list">
+        <!-- Tasks will be displayed here -->
+    </div>
+
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io.connect('http://localhost:3000');
+
+        // -------------------write your code here.--------------------
+        const taskForm = document.getElementById("task-form");
+        const createTaskForm = document.getElementById("create-task-form");
+        const taskText = document.getElementById("task-text");
+        const taskList = document.getElementById("task-list");
+
+        createTaskForm.addEventListener("submit", (event)=>{
+            event.preventDefault();
+            const task = taskText.value;
+            console.log("in event",task);
+            socket.emit("createTask", task);
+            taskText.value = "";
+        })
+
+        function deleteTask(NewtaskId){
+            socket.emit("deleteTask", NewtaskId);
+        }
+        socket.on("taskDeleted", (taskId)=>{
+            console.log("Supriya")
+            const taskElement = document.querySelector(`[data-task-id="${taskId}"]`); 
+            console.log("A lo TaskElement", taskElement)
+            if(taskElement){
+                taskElement.remove();
+            }
+        })
+        //<button onclick="updateTask('${task._id}', prompt('Edit task:', '${task.text}'))">Update</button>
+        socket.on("addtask", (newTask)=>{
+            console.log("A LO Display addtask",newTask);
+            const messageElement = document.createElement("div");
+            messageElement.innerHTML = 
+            `<span>${newTask.text}</span>
+            <button onclick="deleteTask('${newTask._id}')">Delete</button>
+            <button onclick="updateTask('${newTask._id}')">Update</button>
+            `;
+            taskList.appendChild(messageElement);
+
+            console.log("Purnima Haldar");
+        })
+    </script>
+</body>
+
+</html>

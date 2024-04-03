@@ -1,0 +1,16 @@
+{
+    "swagger": "2.0",
+    "info":{
+        "version": "1.0.0",
+        "description": "API for E-Commers application",
+        "title": "E-Commerce API"
+    },
+    "host":"localhost:3200",
+    "paths": {
+        "/api/user/register": {
+            "post":{
+                "summary":"Login"
+            }
+        }
+    }
+}

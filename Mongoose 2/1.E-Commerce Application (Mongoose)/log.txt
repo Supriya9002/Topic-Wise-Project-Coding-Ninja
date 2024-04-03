@@ -1,0 +1,2 @@
+Tue Jan 02 2024 15:29:58 GMT+0530 (India Standard Time). Log Data: [object Object]
+ Tue Jan 02 2024 22:02:17 GMT+0530 (India Standard Time) - /api/user/login - {"email":"supri@gmail.com","password":"supriya52@"}

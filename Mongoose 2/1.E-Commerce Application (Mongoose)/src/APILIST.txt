@@ -1,0 +1,46 @@
+ProductController
+Get Products
+Add a product
+Get one product
+Rate product.
+Filter Product
+
+
+
+2. Find the average rating of a product 
+[Please Node it is nested array]
+
+db.products.aggregate([
+    // 1. Create documents for ratings
+    {
+        $unwind:"$rattings"
+    },
+    // 2. Group rating per product and get average
+    {
+        $group:{
+            _id: "$name",
+            averageRating: {$avg: "$rattings.ratting"}
+        }
+    }
+])
+//db.products.aggregate([{$unwind: "$rattings"},{$group: {_id: "$name",averageRating: { $avg: "$rattings.ratting" }}}])
+[N.B- ata cholche NA, help TA]
+
+// 3. Another Approch (Find the average rating of a product )
+//db.products.aggregate([{$project:{name:1, countOfRating:{$cond:{if:{$isArray:"$rattings"},then:{$size:"$rattings"}, else:0}}}}])
+db.products.aggregate([
+    // 1. Project name of product, and countOfRating
+    {
+        $project:{name:1, countOfRating:{
+            $cond:{if:{$isArray:"$rattings"}
+            ,then:{$size:"$rattings"}, else:0}}}
+    },
+    {
+        // Stage 2: Sort the collection
+        $sort:{countOfRating:-1} // sort decending order
+    },
+    {
+        // 3. Limit to just 1 item in result
+        $limit:1  // last one in array
+    }
+])
